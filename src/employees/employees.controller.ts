@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
@@ -77,8 +78,14 @@ export class EmployeesController {
     }
   }
 
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.employeesService.remove(+id);
-  // }
+  @Delete(':id')
+  async remove(@Param('id') id: string, @Res() response) {
+    const employee = await this.employeesService.remove(id);
+    if (!employee) {
+      response.status(404).json({ message: 'Employees not found.' });
+    }
+    response
+      .status(HttpStatus.OK)
+      .json({ message: 'Employee deleted successfully.' });
+  }
 }

@@ -38,4 +38,9 @@ export class EmployeesService {
     );
     return employee;
   }
+
+  async remove(id: string): Promise<IEmployee> {
+    const employee = await this.employeeModel.findByIdAndDelete(id);
+    return employee;
+  }
 }
