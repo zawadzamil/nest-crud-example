@@ -59,16 +59,22 @@ export class EmployeesController {
     @Body() updateEmployeeDto: UpdateEmployeeDto,
     @Res() response,
   ) {
-    const employee = await this.employeesService.update(id, updateEmployeeDto);
-    console.log('OK');
-    if (!employee) {
-      response.status(HttpStatus.NOT_FOUND).json({
-        message: 'Employees not found',
-      });
+    try {
+      const employee = await this.employeesService.update(
+        id,
+        updateEmployeeDto,
+      );
+      if (!employee) {
+        response.status(HttpStatus.NOT_FOUND).json({
+          message: 'Employees not found',
+        });
+      }
+      response
+        .status(HttpStatus.OK)
+        .json({ message: 'Employees updated successfully', data: employee });
+    } catch (error) {
+      response.status(400).json({ message: error.message });
     }
-    response
-      .status(HttpStatus.OK)
-      .json({ message: 'Employees updated successfully', data: employee });
   }
 
   // @Delete(':id')
